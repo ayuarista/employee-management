@@ -36,10 +36,7 @@ class UserResource extends Resource
                 DatePicker::make('joining_date')->required()->date(),
                 FileUpload::make('photo')
                     ->label('Employee Profile')
-                    ->image()
                     ->disk('public')
-                    ->directory('employee_photos')
-                    ->required(),
 
             ]);
     }
@@ -49,9 +46,13 @@ class UserResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('photo')
-                    ->label('Employee Photo')
-                    ->disk('public')
-                    ->url(fn (User $record): string => $record->photo ? asset('storage/' . $record->photo) : ''),
+                    ->label('Employee Profile')
+                    ->url(fn($record) => asset('storage/' . (
+                        str_starts_with($record->photo, 'employee_photos/')
+                        ? $record->photo
+                        : 'employee_photos/' . $record->photo
+                    ))),
+
                 TextColumn::make('name')->label('Emloyee Name')->searchable(),
                 TextColumn::make('email')->label('Email')->searchable(),
                 TextColumn::make('phone')->label('Employee Phone'),
