@@ -22,7 +22,7 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     public static function form(Form $form): Form
     {
@@ -36,7 +36,8 @@ class UserResource extends Resource
                 DatePicker::make('joining_date')->required()->date(),
                 FileUpload::make('photo')
                     ->label('Employee Profile')
-                    ->disk('public')
+                    ->required(),
+
 
             ]);
     }
@@ -46,22 +47,20 @@ class UserResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('photo')
-                    ->label('Employee Profile')
-                    ->url(fn($record) => asset('storage/' . (
-                        str_starts_with($record->photo, 'employee_photos/')
-                        ? $record->photo
-                        : 'employee_photos/' . $record->photo
-                    ))),
-
-                TextColumn::make('name')->label('Emloyee Name')->searchable(),
+                    ->label('Profile')
+                    ->size(70)
+                    ->circular(),
+                TextColumn::make('name')->label('Name')->searchable(),
                 TextColumn::make('email')->label('Email')->searchable(),
-                TextColumn::make('phone')->label('Employee Phone'),
+                TextColumn::make('address')->label('Address'),
+                TextColumn::make('phone')->label('Phone'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->label('Edit Data'),
+                Tables\Actions\EditAction::make()->label('Edit'),
+                Tables\Actions\DeleteAction::make()->label('Delete'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
