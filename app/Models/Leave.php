@@ -19,4 +19,8 @@ class Leave extends Model
     {
         return $this->belongsTo(LeaveType::class);
     }
+    public function user():BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -17,18 +17,22 @@ class LeaveTypeResource extends Resource
 {
     protected static ?string $model = LeaveType::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'tabler-category-plus';
     protected static ?string $breadcrumb = 'Leave Types';
-    protected static ?string $navigationGroup = 'Leave Management';
+    // protected static ?string $navigationGroup = 'Leave Management';
     protected static ?string $navigationLabel = 'Leave Types';
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Leave Type Name')
+                    ->placeholder('Sick')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('max_days')
+                    ->label('Max Days Leave')
+                    ->placeholder('10')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -56,6 +60,7 @@ class LeaveTypeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -79,4 +84,5 @@ class LeaveTypeResource extends Resource
             'edit' => Pages\EditLeaveType::route('/{record}/edit'),
         ];
     }
+
 }
