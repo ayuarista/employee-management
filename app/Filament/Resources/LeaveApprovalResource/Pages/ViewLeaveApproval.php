@@ -9,4 +9,5 @@ use Filament\Resources\Pages\ViewRecord;
 class ViewLeaveApproval extends ViewRecord
 {
     protected static string $resource = LeaveApprovalResource::class;
+    
 }

@@ -95,7 +95,7 @@ class LeaveApprovalResource extends Resource
                 Actions::make([
                         Action::make('approve_leave')
                             ->requiresConfirmation()
-                            ->modalHeading('Are you sure you want to approve this leave?')
+                            ->modalHeading('Are you sure want to approve this leave?')
                             ->modalDescription('This action will approve the leave request.')
                             ->action(function(LeaveApproval $record) {
                                 $record->update([
@@ -106,7 +106,7 @@ class LeaveApprovalResource extends Resource
                                 Notification::make()
                                     ->success()
                                     ->title('Leave request has been Approved')
-                                    ->body('thank you for your action')
+                                    ->body('thank you for your action!')
                                     ->send();
                             })
                     ])
