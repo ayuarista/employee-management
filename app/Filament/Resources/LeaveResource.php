@@ -2,16 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\LeaveResource\Pages;
-use App\Filament\Resources\LeaveResource\RelationManagers;
-use App\Models\Leave;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Leave;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\LeaveResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\LeaveResource\RelationManagers;
+use App\Models\User;
 
 class LeaveResource extends Resource
 {
@@ -25,6 +27,9 @@ class LeaveResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
+                    ->hidden(function(){
+                        return Auth::user()->hasRole('employee');
+                    })
                     ->required(),
                 Forms\Components\DatePicker::make('start_date')
                     ->required(),
@@ -41,7 +46,14 @@ class LeaveResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $user = Auth::user()->hasRole('employee') ? Auth::user() : null;
+
         return $table
+            ->query(function () use ($user) {
+                if ($user) {
+                    return Leave::query()->where('user_id', $user->id);
+                }
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->sortable(),

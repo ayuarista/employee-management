@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\UserResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\UserResource\RelationManagers;
+use Filament\Forms\Components\Select;
 
 class UserResource extends Resource
 {
@@ -30,7 +31,22 @@ class UserResource extends Resource
             ->schema([
                 TextInput::make('name')->required(),
                 TextInput::make('email')->required()->email(),
-                TextInput::make('password')->required()->password(),
+
+                TextInput::make('password')
+                    ->required(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
+                    ->dehydrated(fn($state) => filled($state))
+                    ->placeholder(
+                        fn($livewire) =>
+                        $livewire instanceof \Filament\Resources\Pages\EditRecord ||
+                            $livewire instanceof \Filament\Resources\Pages\ViewRecord ? '•••••••' : null
+                    )
+                    ->disabled(
+                        fn($livewire) =>
+                        $livewire instanceof \Filament\Resources\Pages\EditRecord ||
+                            $livewire instanceof \Filament\Resources\Pages\ViewRecord
+                    )
+                    ->password(),
+
                 TextInput::make('phone')->required()->tel(),
                 TextInput::make('address')->required(),
                 DatePicker::make('joining_date')->required()->date(),
@@ -38,6 +54,10 @@ class UserResource extends Resource
                     ->label('Employee Profile')
                     ->required(),
 
+                Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->preload()
+                    ->searchable()
 
             ]);
     }
