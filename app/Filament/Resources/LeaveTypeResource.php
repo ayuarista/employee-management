@@ -19,7 +19,7 @@ class LeaveTypeResource extends Resource
 
     protected static ?string $navigationIcon = 'tabler-category-plus';
     protected static ?string $breadcrumb = 'Leave Types';
-    // protected static ?string $navigationGroup = 'Leave Management';
+    protected static ?string $navigationGroup = 'Leave Management';
     protected static ?string $navigationLabel = 'Leave Types';
     public static function form(Form $form): Form
     {

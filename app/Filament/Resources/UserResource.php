@@ -47,8 +47,8 @@ class UserResource extends Resource
                     )
                     ->password(),
 
-                TextInput::make('phone')->required()->tel(),
-                TextInput::make('address')->required(),
+                TextInput::make('phone')->tel(),
+                TextInput::make('address'),
                 DatePicker::make('joining_date')->required()->date(),
                 FileUpload::make('photo')
                     ->label('Employee Profile')

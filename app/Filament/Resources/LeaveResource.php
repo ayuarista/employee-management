@@ -21,6 +21,8 @@ class LeaveResource extends Resource
 
     protected static ?string $navigationIcon = 'tabler-calendar-week';
 
+    protected static ?string $navigationGroup = 'Leave Management';
+
     public static function form(Form $form): Form
     {
         return $form

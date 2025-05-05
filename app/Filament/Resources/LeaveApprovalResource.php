@@ -24,8 +24,9 @@ class LeaveApprovalResource extends Resource
 {
     protected static ?string $model = LeaveApproval::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'hugeicons-validation-approval';
 
+    protected static ?string $navigationGroup = 'Leave Management';
     public static function form(Form $form): Form
     {
         return $form
