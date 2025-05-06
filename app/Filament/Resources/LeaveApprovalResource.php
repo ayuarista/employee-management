@@ -34,7 +34,12 @@ class LeaveApprovalResource extends Resource
                 Forms\Components\Select::make('leave_id')
                     ->relationship('leave', 'reason')
                     ->required(),
-                Forms\Components\TextInput::make('status')
+                Forms\Components\Select::make('status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'approved' => 'Approved',
+                        'rejected' => 'Rejected'
+                    ])
                     ->required(),
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
