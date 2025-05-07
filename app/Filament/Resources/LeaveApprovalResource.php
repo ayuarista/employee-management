@@ -37,7 +37,6 @@ class LeaveApprovalResource extends Resource
                 Forms\Components\Select::make('status')
                     ->options([
                         'pending' => 'Pending',
-                        'approved' => 'Approved',
                         'rejected' => 'Rejected'
                     ])
                     ->required(),

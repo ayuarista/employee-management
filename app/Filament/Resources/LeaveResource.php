@@ -3,17 +3,18 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
+use App\Models\User;
 use Filament\Tables;
 use App\Models\Leave;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\LeaveApproval;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\LeaveResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\LeaveResource\RelationManagers;
-use App\Models\User;
 
 class LeaveResource extends Resource
 {
@@ -29,7 +30,7 @@ class LeaveResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
-                    ->hidden(function(){
+                    ->hidden(function () {
                         return Auth::user()->hasRole('employee');
                     })
                     ->required(),
@@ -97,6 +98,18 @@ class LeaveResource extends Resource
             //
         ];
     }
+
+    protected static function booted()
+    {
+        static::created(function ($leave) {
+            LeaveApproval::create([
+                'leave_id' => $leave->id,
+                'user_id' => Auth::user()->user_id, //belum bisa dideteksi id nya
+                'status' => 'pending',
+            ]);
+        });
+    }
+
 
     public static function getPages(): array
     {
